@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jogo da Cobrinha</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #111;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+    }
+
+    canvas {
+      background-color: #222;
+      border: 2px solid lime;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: lime;
+    }
+
+    .mobile-controls {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .mobile-controls button {
+      background-color: lime;
+      border: none;
+      color: black;
+      padding: 15px;
+      margin: 5px;
+      font-size: 20px;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-controls {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🐍 Jogo da Cobrinha</h1>
+  <canvas id="game" width="400" height="400"></canvas>
+
+  <div class="mobile-controls">
+    <div style="text-align:center;">
+      <button onclick="setDirection('up')">⬆️</button>
+    </div>
+    <div>
+      <button onclick="setDirection('left')">⬅️</button>
+      <button onclick="setDirection('down')">⬇️</button>
+      <button onclick="setDirection('right')">➡️</button>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+
+    const box = 20;
+    const rows = canvas.height / box;
+    const cols = canvas.width / box;
+
+    let snake = [{ x: 9 * box, y: 9 * box }];
+    let food = {
+      x: Math.floor(Math.random() * cols) * box,
+      y: Math.floor(Math.random() * rows) * box
+    };
+    let direction = "right";
+    let gameOver = false;
+
+    function draw() {
+      if (gameOver) return;
+
+      ctx.fillStyle = "#222";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i === 0 ? "lime" : "#0f0";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+      }
+
+      ctx.fillStyle = "red";
+      ctx.fillRect(food.x, food.y, box, box);
+
+      let head = { x: snake[0].x, y: snake[0].y };
+
+      if (direction === "left") head.x -= box;
+      if (direction === "right") head.x += box;
+      if (direction === "up") head.y -= box;
+      if (direction === "down") head.y += box;
+
+      // Colisão com parede
+      if (
+        head.x < 0 ||
+        head.x >= canvas.width ||
+        head.y < 0 ||
+        head.y >= canvas.height ||
+        collision(head, snake)
+      ) {
+        gameOver = true;
+        alert("💀 Game Over!");
+        document.location.reload();
+        return;
+      }
+
+      snake.unshift(head);
+
+      // Comer comida
+      if (head.x === food.x && head.y === food.y) {
+        food = {
+          x: Math.floor(Math.random() * cols) * box,
+          y: Math.floor(Math.random() * rows) * box
+        };
+      } else {
+        snake.pop();
+      }
+    }
+
+    function collision(head, array) {
+      for (let i = 0; i < array.length; i++) {
+        if (head.x === array[i].x && head.y === array[i].y) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function setDirection(dir) {
+      if (dir === "left" && direction !== "right") direction = "left";
+      if (dir === "up" && direction !== "down") direction = "up";
+      if (dir === "right" && direction !== "left") direction = "right";
+      if (dir === "down" && direction !== "up") direction = "down";
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft" && direction !== "right") direction = "left";
+      if (event.key === "ArrowUp" && direction !== "down") direction = "up";
+      if (event.key === "ArrowRight" && direction !== "left") direction = "right";
+      if (event.key === "ArrowDown" && direction !== "up") direction = "down";
+    });
+
+    setInterval(draw, 120);
+  </script>
+</body>
+</html>
