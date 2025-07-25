@@ -28,7 +28,7 @@ Este projeto ainda está sendo construído e ajustado conforme irei me desenvolv
 📌 Também me inspirei em templates de outros desenvolvedores, como:  
 - [https://github.com/denniskigen](https://github.com/denniskigen)  
 - [https://github.com/sbmark](https://github.com/sbmark)
-- [https://iuricode.com/] 
+- https://iuricode.com/
 
 ---
 
