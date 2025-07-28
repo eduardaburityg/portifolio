@@ -4,7 +4,7 @@ Este é meu portfólio pessoal feito com HTML, CSS e animações do Font Awesome
 
 ---
 
-https://portifolio-kappa-lime.vercel.app/
+https://portifolio-eduarda.vercel.app/
 
 ## ✨ Tecnologias Utilizadas
 
