@@ -710,7 +710,6 @@ li span:hover:after {
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        min-height: 100vh;
         width: 100vw;
     }
     /* .work-double-row{
@@ -749,7 +748,6 @@ li span:hover:after {
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        min-height: 100vh;
     }
 
     #left-hero {
