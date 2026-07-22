@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eduarda — Agentes de IA que trabalham por você</title>
+<meta name="description" content="Construo agentes de IA para atendimento, vendas e automação — rodando 24/7 enquanto você foca no que importa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #1b1730;
+    --bg-panel: #241f3d;
+    --bg-panel-2: #2a2447;
+    --green: #25d366;
+    --coral: #ff8a65;
+    --text: #f5f3f0;
+    --text-muted: #a29dc2;
+    --line: rgba(245,243,240,0.10);
+    --radius: 18px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0; letter-spacing:-0.01em;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.8rem;
+    color:var(--green);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    letter-spacing:0.02em;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px;height:7px;border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 0 rgba(37,211,102,0.6);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(37,211,102,0.5);}
+    70%{box-shadow:0 0 0 8px rgba(37,211,102,0);}
+    100%{box-shadow:0 0 0 0 rgba(37,211,102,0);}
+  }
+  a{color:inherit; text-decoration:none;}
+  :focus-visible{outline:2px solid var(--green); outline-offset:3px;}
+  .wrap{max-width:1160px; margin:0 auto; padding:0 28px;}
+  nav{
+    position:sticky; top:0; z-index:20;
+    background:rgba(27,23,48,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:72px;}
+  .logo{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.1rem;}
+  .logo span{color:var(--green);}
+  .nav-cta{
+    background:var(--green); color:#0f2016; font-weight:600;
+    padding:10px 20px; border-radius:100px; font-size:0.9rem;
+    transition:transform .2s ease;
+  }
+  .nav-cta:hover{transform:translateY(-2px);}
+
+  /* HERO */
+  .hero{padding:88px 0 96px; position:relative;}
+  .hero .wrap{display:grid; grid-template-columns:1.1fr 1fr; gap:60px; align-items:center;}
+  .hero h1{font-size:clamp(2.3rem, 4.4vw, 3.6rem); font-weight:700; line-height:1.08; margin:22px 0 20px;}
+  .hero p.sub{font-size:1.15rem; color:var(--text-muted); max-width:480px; line-height:1.6; margin-bottom:34px;}
+  .cta-row{display:flex; gap:16px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:15px 26px; border-radius:100px; font-weight:600; font-size:1rem;
+    transition:transform .2s ease, background .2s ease;
+  }
+  .btn-primary{background:var(--green); color:#0f2016;}
+  .btn-primary:hover{transform:translateY(-2px); background:#2fe377;}
+  .btn-secondary{border:1.5px solid var(--line); color:var(--text);}
+  .btn-secondary:hover{border-color:var(--text-muted); transform:translateY(-2px);}
+
+  /* Chat mockup - signature element */
+  .chat-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.5);
+    position:relative;
+  }
+  .chat-head{display:flex; align-items:center; gap:12px; padding-bottom:16px; border-bottom:1px solid var(--line); margin-bottom:18px;}
+  .chat-avatar{
+    width:38px;height:38px;border-radius:50%;
+    background:linear-gradient(135deg, var(--green), #128c4a);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk'; font-weight:700; color:#0f2016; font-size:0.95rem;
+  }
+  .chat-name{font-weight:600; font-size:0.95rem;}
+  .chat-status{font-size:0.78rem; color:var(--green); font-family:'JetBrains Mono',monospace;}
+  .chat-body{min-height:230px; display:flex; flex-direction:column; gap:12px; justify-content:flex-end;}
+  .bubble{
+    max-width:80%; padding:11px 15px; border-radius:16px; font-size:0.92rem; line-height:1.4;
+    opacity:0; transform:translateY(8px);
+    animation:bubbleIn .45s ease forwards;
+  }
+  .bubble.client{align-self:flex-end; background:#3a3364; border-bottom-right-radius:4px;}
+  .bubble.agent{align-self:flex-start; background:var(--bg-panel-2); border:1px solid var(--line); border-bottom-left-radius:4px;}
+  @keyframes bubbleIn{to{opacity:1; transform:translateY(0);}}
+  .typing{align-self:flex-start; display:flex; gap:4px; padding:12px 15px; background:var(--bg-panel-2); border:1px solid var(--line); border-radius:16px; border-bottom-left-radius:4px; opacity:0; animation:bubbleIn .3s ease forwards;}
+  .typing span{width:6px;height:6px;border-radius:50%;background:var(--text-muted); animation:blink 1.2s infinite;}
+  .typing span:nth-child(2){animation-delay:.2s;} .typing span:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,60%,100%{opacity:.3;} 30%{opacity:1;}}
+
+  /* Sections */
+  section{padding:90px 0;}
+  .section-head{max-width:560px; margin-bottom:52px;}
+  .section-head h2{font-size:clamp(1.8rem,3vw,2.4rem); margin-top:14px; line-height:1.15;}
+  .section-head p{color:var(--text-muted); font-size:1.05rem; margin-top:14px; line-height:1.6;}
+
+  .grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+  .node-card{background:var(--bg-panel); padding:30px 26px; position:relative;}
+  .node-card .dot{width:9px;height:9px;border-radius:50%; background:var(--coral); margin-bottom:20px;}
+  .node-card h3{font-size:1.05rem; margin-bottom:10px;}
+  .node-card p{color:var(--text-muted); font-size:0.92rem; line-height:1.55; margin:0;}
+
+  .cases{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  .case-card{background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius); padding:26px; display:flex; flex-direction:column; gap:16px;}
+  .case-card img{width:100%; border-radius:12px; display:block; max-height:260px; object-fit:cover; object-position:top;}
+  .case-card h3{font-size:1.1rem;}
+  .case-card p{color:var(--text-muted); font-size:0.92rem; line-height:1.55; margin:0;}
+  .case-tag{font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--green); text-transform:uppercase; letter-spacing:0.04em;}
+
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:30px; counter-reset:step;}
+  .step{position:relative; padding-top:8px;}
+  .step .num{font-family:'Space Grotesk'; font-weight:700; font-size:2.2rem; color:var(--bg-panel-2); -webkit-text-stroke:1.5px var(--text-muted); display:block; margin-bottom:14px;}
+  .step h3{font-size:1.05rem; margin-bottom:8px;}
+  .step p{color:var(--text-muted); font-size:0.92rem; line-height:1.55; margin:0;}
+
+  .final-cta{
+    background:linear-gradient(160deg, var(--bg-panel), var(--bg-panel-2));
+    border:1px solid var(--line);
+    border-radius:28px;
+    padding:70px 40px;
+    text-align:center;
+  }
+  .final-cta h2{font-size:clamp(2rem,4vw,2.8rem); margin-bottom:16px;}
+  .final-cta p{color:var(--text-muted); font-size:1.05rem; margin-bottom:32px;}
+
+  footer{padding:44px 0; border-top:1px solid var(--line); text-align:center;}
+  footer p{color:var(--text-muted); font-size:0.88rem; margin:0 0 6px;}
+  footer a.back{font-size:0.88rem; color:var(--text-muted); text-decoration:underline;}
+
+  @media (max-width: 860px){
+    .hero .wrap{grid-template-columns:1fr; gap:44px;}
+    .grid-4{grid-template-columns:1fr 1fr;}
+    .cases{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+  }
+  @media (max-width:520px){
+    .grid-4{grid-template-columns:1fr;}
+    .hero{padding:56px 0 64px;}
+    section{padding:64px 0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001s !important; animation-iteration-count:1 !important; transition:none !important; scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">eduarda<span>.</span>dev</div>
+    <a class="nav-cta" href="https://wa.me/5551990006204" target="_blank" rel="noopener">Falar no WhatsApp</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">agente ativo 24/7</span>
+      <h1>Eu construo agentes de IA que trabalham por você.</h1>
+      <p class="sub">Atendimento, vendas e automações rodando no piloto automático — enquanto você foca no que importa.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://wa.me/5551990006204" target="_blank" rel="noopener">Falar no WhatsApp</a>
+        <a class="btn btn-secondary" href="#o-que-construo">Quero saber mais</a>
+      </div>
+    </div>
+
+    <div class="chat-card" aria-hidden="true">
+      <div class="chat-head">
+        <div class="chat-avatar">IA</div>
+        <div>
+          <div class="chat-name">Agente de Atendimento</div>
+          <div class="chat-status">● online agora</div>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+    </div>
+  </div>
+</header>
+
+<section id="o-que-construo">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--coral)">o que eu construo</span>
+      <h2>Automação que substitui trabalho repetitivo, não o seu cliente.</h2>
+      <p>Cada agente é feito sob medida pro seu processo — não é um chatbot genérico de respostas prontas.</p>
+    </div>
+    <div class="grid-4">
+      <div class="node-card">
+        <div class="dot"></div>
+        <h3>Atendimento automático</h3>
+        <p>Responde dúvidas, qualifica e só escala pra um humano quando realmente precisa.</p>
+      </div>
+      <div class="node-card">
+        <div class="dot"></div>
+        <h3>Vendas &amp; follow-up</h3>
+        <p>Fluxos que reengajam leads automaticamente, sem perder o timing da conversa.</p>
+      </div>
+      <div class="node-card">
+        <div class="dot"></div>
+        <h3>Integração de sistemas</h3>
+        <p>Conecto WhatsApp, CRM e banco de dados pra tudo conversar entre si.</p>
+      </div>
+      <div class="node-card">
+        <div class="dot"></div>
+        <h3>Automação de processos</h3>
+        <p>Tarefas internas rodando sozinhas, sem depender de planilha ou passo manual.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--coral)">na prática</span>
+      <h2>Agentes que já estão em produção, atendendo gente de verdade.</h2>
+    </div>
+    <div class="cases">
+      <div class="case-card">
+        <span class="case-tag">WhatsApp · IA conversacional</span>
+        <h3>Clara — agente de vendas com IA</h3>
+        <p>Atendimento e vendas via WhatsApp com memória de conversa e busca em base de conhecimento real, respondendo leads em escala.</p>
+      </div>
+      <div class="case-card">
+        <img src="assets/img/work/chat-suporte-inapp/hero.png" alt="Chat de suporte via Chatwoot dentro de um aplicativo mobile">
+        <span class="case-tag">App mobile · Chatwoot</span>
+        <h3>Chat de suporte dentro do app</h3>
+        <p>Suporte embutido no aplicativo, conectando o usuário direto ao time de atendimento sem sair da tela.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--coral)">como funciona</span>
+      <h2>Do primeiro papo ao agente no ar.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="num">01</span>
+        <h3>Conversa inicial</h3>
+        <p>Entendo seu processo hoje e onde a automação realmente encaixa.</p>
+      </div>
+      <div class="step">
+        <span class="num">02</span>
+        <h3>Construção</h3>
+        <p>Monto o agente e testo com casos reais do seu dia a dia.</p>
+      </div>
+      <div class="step">
+        <span class="num">03</span>
+        <h3>Agente no ar</h3>
+        <p>Acompanho o uso e ajusto o fluxo conforme a necessidade aparece.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final-cta">
+      <span class="eyebrow" style="justify-content:center">bora começar</span>
+      <h2>Bora automatizar?</h2>
+      <p>Me chama e conta o que você precisa automatizar.</p>
+      <a class="btn btn-primary" href="https://wa.me/5551990006204" target="_blank" rel="noopener">Falar no WhatsApp agora</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Eduarda — Engenheira de IA &amp; Automação</p>
+    <a class="back" href="index.html">← voltar pro portfólio</a>
+  </div>
+</footer>
+
+<script>
+  const chatScript = [
+    {type:'client', text:'Oi, vocês têm entrega pra RS?'},
+    {type:'typing'},
+    {type:'agent', text:'Sim! Entregamos em todo o Rio Grande do Sul 🚚'},
+    {type:'client', text:'Perfeito, quero fazer um pedido'},
+    {type:'typing'},
+    {type:'agent', text:'Show! Vou te passar pro time comercial agora mesmo 👋'}
+  ];
+
+  const body = document.getElementById('chatBody');
+  let i = 0;
+
+  function step(){
+    if (i >= chatScript.length){
+      body.innerHTML = '';
+      i = 0;
+    }
+    const item = chatScript[i];
+    if (item.type === 'typing'){
+      const t = document.createElement('div');
+      t.className = 'typing';
+      t.innerHTML = '<span></span><span></span><span></span>';
+      body.appendChild(t);
+      setTimeout(() => { t.remove(); i++; step(); }, 900);
+      return;
+    }
+    const b = document.createElement('div');
+    b.className = 'bubble ' + item.type;
+    b.textContent = item.text;
+    body.appendChild(b);
+    while (body.children.length > 4) body.removeChild(body.firstChild);
+    i++;
+    setTimeout(step, 1800);
+  }
+  step();
+</script>
+
+</body>
+</html>
