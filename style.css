@@ -782,11 +782,14 @@ li span:hover:after {
     }
 
     #hero-right {
-        display: none;
+        display: block;
+        text-align: center;
+        margin-top: 20px;
     }
 
     .hero-des {
         padding-right: 30px;
+        text-align: left;
     }
 
     .menu-wrap {
