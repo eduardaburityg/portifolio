@@ -781,8 +781,15 @@ li span:hover:after {
 
     #hero-right {
         display: block;
+        order: -1;
         text-align: center;
-        margin-top: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    #hero-img {
+        width: 55%;
+        margin-top: 0;
     }
 
     .social-icons {
